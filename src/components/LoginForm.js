@@ -10,16 +10,32 @@ class LoginForm extends Component {
 
   onButtonPress() {
     const { email, password } = this.state;
-
     this.setState({ error: '', loading: true });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
+    // function passed off to a promise, that will be envoked at some point
+    // in the future, and we dont know context that it will be called with
+    // we have to bind the context
+      .then(this.onLoginSuccess.bind(this))
       .catch(() => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
-          .catch(() => {
-            this.setState({ error: 'Authentication Failed.' });
-          });
+          .then(this.onLoginSuccess.bind(this))
+          .catch(this.onLoginFail.bind(this));
       });
+  }
+
+// helper method to handle sucessful login
+  onLoginSuccess() {
+    this.setState({
+      email: '',
+      password: '',
+      loading: false,
+      error: ''
+    });
+  }
+
+  onLoginFail() {
+    this.setState({ error: 'Authentication Failed', loading: false });
   }
 
 // helper method to either display button or spinner
