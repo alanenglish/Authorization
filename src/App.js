@@ -31,7 +31,7 @@ class App extends Component {
       case true:
         return (
           <View style={{ height: 45, marginTop: 10 }}>
-            <Button>
+            <Button onPress={() => firebase.auth().signOut()}>
               Log Out
             </Button>
           </View>
@@ -39,7 +39,11 @@ class App extends Component {
       case false:
         return <LoginForm />;
       default:
-        return <Spinner size="large" />;
+        return (
+          <View style={styles.spinnerStyle}>
+            <Spinner size="large" />
+          </View>
+        );
     }
   }
 
@@ -52,5 +56,14 @@ class App extends Component {
     );
   }
 }
+
+const styles = {
+  spinnerStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 240
+  }
+};
 
 export default App;

@@ -53,6 +53,7 @@ class LoginForm extends Component {
 
   render() {
     return (
+      // input is controlled component
       <Card>
         <CardSection>
           <Input
